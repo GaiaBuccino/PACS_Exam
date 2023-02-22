@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "icoFoam.C": "cpp",
+        "icoFoamUp.C": "cpp",
+        "vorticity-streamFoam.C": "cpp"
+    }
+}

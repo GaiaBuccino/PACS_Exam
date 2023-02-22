@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "vorticity-streamFoam.C": "cpp",
+        "createFields.H": "cpp"
+    }
+}
