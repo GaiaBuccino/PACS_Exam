@@ -1,7 +1,7 @@
 
 #include "unsteadyNSWPsi.H"
 
-/// Source file of the unsteadyNS class.
+/// Source file of the unsteadyNSPsi class.
 
 // * * * * * * * * * * * * * * * Constructors * * * * * * * * * * * * * * * * //
 
@@ -26,6 +26,7 @@ unsteadyNSWPsi::unsteadyNSWPsi(int argc, char* argv[])
     argList& args = _args();
 #include "createTime.H"
 #include "createMesh.H"
+
     _pimple = autoPtr<pimpleControl>
               (
                   new pimpleControl
@@ -33,6 +34,7 @@ unsteadyNSWPsi::unsteadyNSWPsi(int argc, char* argv[])
                       mesh
                   )
               );
+  
     ITHACAdict = new IOdictionary
     (
         IOobject
@@ -44,6 +46,7 @@ unsteadyNSWPsi::unsteadyNSWPsi(int argc, char* argv[])
             IOobject::NO_WRITE
         )
     );
+    
 #include "createFields.H"
 #include "createFvOptions.H"
     para = ITHACAparameters::getInstance(mesh, runTime);
@@ -60,26 +63,30 @@ unsteadyNSWPsi::unsteadyNSWPsi(int argc, char* argv[])
              "The time derivative approximation must be set to either first or second order scheme in ITHACAdict");
     offline = ITHACAutilities::check_off();
     podex = ITHACAutilities::check_pod();
-    supex = ITHACAutilities::check_sup();
+    //supex = ITHACAutilities::check_sup();
 }
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
 void unsteadyNSWPsi::truthSolve(List<scalar> mu_now, fileName folder)
 {
+    cout<< "post createFields"<<endl; //da SPOSTARE IN BASSO FINCHE NON SMETTE DI9 STAMPARE
     Time& runTime = _runTime();
     surfaceScalarField& phi = _phi();
+    cout<< "siamo prima dei campi"<<endl;
     fvMesh& mesh = _mesh();
 #include "initContinuityErrs.H"
     fv::options& fvOptions = _fvOptions();
     pimpleControl& pimple = _pimple();
-    volScalarField& p = _p();
+    //volScalarField& p = _p();
+    
     volVectorField& U = _U(); 
     volScalarField& W = _W();
     volScalarField& Psi_z = _Psi_z();
     volVectorField& Psi = _Psi();
     volVectorField& temp = _temp();
     IOMRFZoneList& MRF = _MRF();
+    cout<< "siamo dopo i campi"<<endl;
     singlePhaseTransportModel& laminarTransport = _laminarTransport();
     instantList Times = runTime.times();
     runTime.setEndTime(finalTime);
@@ -89,7 +96,7 @@ void unsteadyNSWPsi::truthSolve(List<scalar> mu_now, fileName folder)
     nextWrite = startTime;
 
     // Set time-dependent velocity BCs for initial condition
-    if (timedepbcMethod == "yes")
+    /* if (timedepbcMethod == "yes")
     {
         for (label i = 0; i < inletPatch.rows(); i++)
         {
@@ -102,23 +109,26 @@ void unsteadyNSWPsi::truthSolve(List<scalar> mu_now, fileName folder)
 
             assignBC(U, inletPatch(i, 0), inl);
         }
-    }
+    } */
 
     // Export and store the initial conditions for velocity and pressure
     ITHACAstream::exportSolution(U, name(counter), folder);
-    ITHACAstream::exportSolution(p, name(counter), folder); 
+    //ITHACAstream::exportSolution(p, name(counter), folder); 
     ITHACAstream::exportSolution(W, name(counter), folder);
     ITHACAstream::exportSolution(Psi_z, name(counter), folder);
-//  ITHACAstream::exportSolution(Psi, name(counter), folder);
+    ITHACAstream::exportSolution(Psi, name(counter), folder);
     std::ofstream of(folder + name(counter) + "/" +
                      runTime.timeName());
     Ufield.append(U.clone());
-    Pfield.append(p.clone());
+    //Pfield.append(p.clone());
+    Wfield.append(W.clone());
+    Psi_zfield.append(Psi_z.clone());
+    //Psi = temp*Psi_z; 
+    Psifield.append(Psi.clone());
     counter++;
     nextWrite += writeEvery;
 
-    Psi = temp*Psi_z; 
-
+    
     // Start the time loop
     while (runTime.run())
     {
@@ -129,7 +139,7 @@ void unsteadyNSWPsi::truthSolve(List<scalar> mu_now, fileName folder)
         runTime++;
         Info << "Time = " << runTime.timeName() << nl << endl;
 
-        // Set time-dependent velocity BCs
+        /* // Set time-dependent velocity BCs
         if (timedepbcMethod == "yes")
         {
             for (label i = 0; i < inletPatch.rows(); i++)
@@ -145,12 +155,12 @@ void unsteadyNSWPsi::truthSolve(List<scalar> mu_now, fileName folder)
             }
 
             counter2 ++;
-        }
+        } */
 
 #include "W-PsiEqn.H"
 
         // --- Pressure-velocity PIMPLE corrector loop
-        while (pimple.loop())
+/*         while (pimple.loop())
         {
 #include "UEqn.H"
 
@@ -165,24 +175,27 @@ void unsteadyNSWPsi::truthSolve(List<scalar> mu_now, fileName folder)
                 laminarTransport.correct();
                 turbulence->correct();
             }
-        } 
-
+        }  
+ */
         Info << "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
              << "  ClockTime = " << runTime.elapsedClockTime() << " s"
              << nl << endl;
 
+        Info<<"il valkore di check runtime e':"<<checkWrite(runTime)<<"\n"<<endl;
         if (checkWrite(runTime))
         {
+            Info<< "PRE-EXPORT"<<endl;
             ITHACAstream::exportSolution(U, name(counter), folder);
-            ITHACAstream::exportSolution(p, name(counter), folder);
+            //ITHACAstream::exportSolution(p, name(counter), folder);
             ITHACAstream::exportSolution(W, name(counter), folder);
             ITHACAstream::exportSolution(Psi_z, name(counter), folder);
-        //  ITHACAstream::exportSolution(Psi, name(counter), folder);
+            ITHACAstream::exportSolution(Psi, name(counter), folder);
             Ufield.append(U.clone());
-            Pfield.append(p.clone());
+            Info<<"U APPENDED"<<endl;
+            //Pfield.append(p.clone());
             Wfield.append(W.clone());
             Psi_zfield.append(Psi_z.clone());
-        //  Psifield.append(Psi.clone());
+            Psifield.append(Psi.clone());
             counter++;
             nextWrite += writeEvery;
             writeMu(mu_now);

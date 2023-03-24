@@ -25,7 +25,7 @@ License
 // Solve the entire system vorticity-streamlines
 
 //MRF.correctBoundaryVelocity(U);  
-
+cout<< "siamo nel solver"<<endl;
 U = fvc::curl(Psi);  //used to compute the first phi
 phi = fvc::flux(U);
 

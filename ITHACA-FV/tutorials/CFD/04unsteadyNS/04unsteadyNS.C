@@ -107,13 +107,13 @@ int main(int argc, char* argv[])
     example.inletIndex(0, 1) = 0;
     // Time parameters
     example.startTime = 50;
-    example.finalTime = 70;
+    example.finalTime = 55;
     example.timeStep = 0.01;
     example.writeEvery = 0.1;
     // Perform The Offline Solve;
     example.offlineSolve();
     // Solve the supremizer problem
-    example.solvesupremizer();
+    /* example.solvesupremizer();
     // Search the lift function
     example.liftSolve();
     // Normalize the lifting function
@@ -145,8 +145,8 @@ int main(int argc, char* argv[])
     reduced.solveOnline_sup(vel_now, 1);
     // Reconstruct the solution and export it
     reduced.reconstruct(true, "./ITHACAoutput/ReconstructionSUP/");
-    exit(0);
-}
+    exit(0);*/
+} 
 
 
 

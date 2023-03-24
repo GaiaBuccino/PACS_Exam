@@ -1,10 +1,12 @@
 ReducedProblem/ReducedProblem.C
 ReducedUnsteadyNS/ReducedUnsteadyNS.C
+ReducedUnsteadyNSWPsi/ReducedUnsteadyNSWPsi.C
 ReducedUnsteadyBB/ReducedUnsteadyBB.C
 ReducedUnsteadyNSTurb/ReducedUnsteadyNSTurb.C
 ReducedUnsteadyNST/ReducedUnsteadyNST.C
 ReducedUnsteadyNSTTurb/ReducedUnsteadyNSTTurb.C
 ReducedSteadyNS/ReducedSteadyNS.C
+ReducedSteadyNSWPsi/ReducedSteadyNSWPsi.C
 ReducedSteadyNSTurb/ReducedSteadyNSTurb.C
 ReducedSteadyNSTurbIntrusive/ReducedSteadyNSTurbIntrusive.C
 ReducedUnsteadyNSTurbIntrusive/ReducedUnsteadyNSTurbIntrusive.C

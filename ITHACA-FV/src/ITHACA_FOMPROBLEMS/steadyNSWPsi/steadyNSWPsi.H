@@ -58,17 +58,18 @@ class steadyNSWPsi: public steadyNS
         PtrList<volVectorField> temp;
 
         /// List of pointers used to form the vorticity modes
-        volVectorModes Wmodes;
+        volScalarModes Wmodes;
 
         /// List of pointers used to form the streamlines scalar modes
-        volVectorModes Psi_zmodes;
+        volScalarModes Psi_zmodes;
 
         /// List of pointers used to form the streamlines vector modes
         volVectorModes Psimodes;
 
-        /// List of pointers used to the projection modes of W and Psi_z    
-        volVectorModes W_proj_modes;
-        volVectorModes Psi_z_proj_modes;
+        /* /// List of pointers used to the projection modes of W and Psi_z    
+        volScalarModes W_proj_modes;
+        volScalarModes Psi_z_proj_modes;
+        volVectorModes Psi_proj_modes; */
 
 
         /// Number of vorticity modes used for the projection
@@ -93,7 +94,6 @@ class steadyNSWPsi: public steadyNS
         autoPtr<volScalarField> _W;
 
         autoPtr<volScalarField> _T;
-
 
         /// Streamlines scalar field
         autoPtr<volScalarField> _Psi_z;

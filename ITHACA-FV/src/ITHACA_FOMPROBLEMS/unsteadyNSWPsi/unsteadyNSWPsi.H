@@ -42,11 +42,11 @@ SourceFiles
 #include "fixedFluxPressureFvPatchScalarField.H"
 #include "steadyNSWPsi.H"
 #include "UnsteadyProblem.H"
-#include "unsteadyNS.H"
+//#include "unsteadyNS.H"
 #include <iostream>
 
 
-class unsteadyNSWPsi: public steadyNSWPsi, UnsteadyProblem
+class unsteadyNSWPsi: public steadyNSWPsi, public UnsteadyProblem
 {
     public:
         // Constructors
@@ -59,6 +59,8 @@ class unsteadyNSWPsi: public steadyNSWPsi, UnsteadyProblem
         // Dummy variables to transform pimplefoam into a class
         /// pimpleControl
         autoPtr<pimpleControl> _pimple;
+        /// Flux
+        //autoPtr<surfaceScalarField> _phi;
 
         /// Turbulence model
         autoPtr<incompressible::turbulenceModel> turbulence;
@@ -84,7 +86,7 @@ class unsteadyNSWPsi: public steadyNSWPsi, UnsteadyProblem
         // Time derivative numerical scheme order
         word timeDerivativeSchemeOrder;
 
-        void truthSolve(List<scalar> mu_now, fileName folder);
+        void truthSolve(List<scalar> mu_now, fileName folder = "./ITHACAoutput/Offline/");
 
 };
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

@@ -170,23 +170,6 @@ _Psi0 = autoPtr<volVectorField>
           new volVectorField(Psi0)
       );
 
-/* _Uflux = autoPtr<volVectorField>
-      (
-         new volVectorField
-         (
-             IOobject
-             (
-                 "Uflux",
-                 runTime.timeName(),
-                 mesh,
-                 IOobject::NO_READ,
-                 IOobject::NO_WRITE
-             ),
-             mesh
-         )
-      );
- */
-
 #include "createPhi.H"
 
 
