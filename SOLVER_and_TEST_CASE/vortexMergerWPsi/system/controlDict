@@ -15,7 +15,7 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-application     vorticity-streamFoam;
+application     icoFoam;
 
 startFrom       startTime;
 
@@ -29,7 +29,7 @@ deltaT          0.01;
 
 writeControl    timeStep;
 
-writeInterval   25;
+writeInterval   50;
 
 purgeWrite      0;
 

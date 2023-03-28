@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "vortexMergerWPsi_ITHACA.C": "cpp",
+        "steadyNSWPsi.C": "cpp",
+        "steadyNS.C": "cpp",
+        "ITHACAPOD.C": "cpp"
+    }
+}
